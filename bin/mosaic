@@ -1,0 +1,41 @@
+filename = ARGV[0] # The first argument is the filename with the input table string
+table = Hash.new
+rownum, colnum = 0
+File.open(filename) do |f|
+  string_input_table = f.read
+  rows = string_input_table.split("\n")
+  rownum = 0
+  rows.each do |row| 
+	colnum =0
+	row.split("|").each do |ch|
+		if not ch =~ /\s+/ and ch.to_s != ''
+			colnum = colnum -1
+			key = "#{rownum},#{colnum}"
+			table[key] = ch
+			#print " -->",ch,"<--[",rownum,"][", colnum,"]"
+		end
+		colnum += 1
+	end
+	#puts ""
+	rownum += 1
+  end
+end
+#puts "table is #{rownum-1} X #{colnum}"
+#table.each { |key, val| puts "#{key}->#{val}" }
+#construct a table with the same size
+
+for i in 0..rownum- 1
+	for j in 0..colnum
+		key = i.to_s+","+j.to_s
+		if table[key] 
+			print "|#{table[key]}"
+		else
+			if j < colnum 
+				print "| "
+			else
+				print "|"
+			end
+		end
+	end
+	print "\n"
+end
